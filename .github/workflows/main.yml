@@ -41,6 +41,3 @@ jobs:
       
     - name: Test
       run: npm run testAcceptance:exit  # Run project tests
-
-# Define a global condition to stop the workflow if any job fails
-if: ${{ failure() }}
