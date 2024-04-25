@@ -1,0 +1,47 @@
+name: LoopBack Pipeline
+
+on: [push]  # Trigger the workflow on push events
+
+jobs:
+  build:
+    runs-on: windows-latest  # Use Windows as the operating system for the job
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2  # Check out your repository's code
+      
+    - name: Set up Node.js
+      uses: actions/setup-node@v2  # Set up Node.js environment
+      with:
+        node-version: '18.x'  # Specify Node.js version
+      
+    - name: Install LoopBack CLI
+      run: npm install -g @loopback/cli  # Install LoopBack CLI globally
+      
+    - name: Install dependencies
+      run: npm install 
+      run: npm run pretest   # Install project dependencies
+      
+    - name: Build
+      run: lb-tsc  # Run LoopBack TypeScript compiler
+
+  test:
+    runs-on: windows-latest  # Use Windows as the operating system for the job
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2  # Check out your repository's code
+      
+    - name: Set up Node.js
+      uses: actions/setup-node@v2  # Set up Node.js environment
+      with:
+        node-version: '14.x'  # Specify Node.js version
+      
+    - name: Install dependencies
+      run: npm install  # Install project dependencies
+      
+    - name: Test
+      run: npm run testAcceptance:exit  # Run project tests
+
+# Define a global condition to stop the workflow if any job fails
+if: ${{ failure() }}
