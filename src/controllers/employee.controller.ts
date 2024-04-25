@@ -55,6 +55,7 @@ export class EmployeeController {
   async count(
     @param.where(Employee) where?: Where<Employee>,
   ): Promise<Count> {
+    console.log("employees");
     return this.employeesRepository.count(where);
   }
 
